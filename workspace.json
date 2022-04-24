@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "projects": {
+    "products-e2e": "apps/products-e2e",
+    "products": {
+      "root": "apps/products",
+      "sourceRoot": "apps/products",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "webpackConfig": "apps/products/webpack.config.js",
+            "commands": ["nx run products:build-app"],
+            "parallel": false
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "build-app": {
+          "executor": "@nrwl/web:webpack",
+          "options": {
+            "webpackConfig": "apps/products/webpack.config.js",
+            "tsConfig": "apps/products/tsconfig.app.json",
+            "main": "apps/products/src/main.ts",
+            "index": "apps/products/src/index.html",
+            "outputPath": "dist/apps/products"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "webpackConfig": "apps/products/webpack.config.js",
+            "buildTarget": "products:build-app",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "products:build-app:production",
+              "dev": false
+            }
+          }
+        }
+      },
+      "tags": []
+    }
+  }
+}
