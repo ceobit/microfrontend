@@ -5,14 +5,18 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 module.exports = (config, context) => {
   return merge(config, {
     devServer: {
-      port: 8081,
+      port: 8080,
+      hot: false,
+      liveReload: false,
+      proxy: {
+        'http://localhost:8080': 'http://localhost:8080',
+      },
     },
     plugins: [
       new ModuleFederationPlugin({
-        name: 'products',
-        filename: 'remoteEntry.js',
-        exposes: {
-          './ProductsIndex': './src/app/app.element.js',
+        name: 'container',
+        remotes: {
+          products: 'products@http://localhost:8081/remoteEntry.js',
         },
       }),
     ],
